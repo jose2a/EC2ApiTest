@@ -1,12 +1,10 @@
 package org.example.basicapp;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
-import java.util.Scanner;
 
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.AuthorizeSecurityGroupIngressRequest;
@@ -33,42 +31,6 @@ import software.amazon.awssdk.services.ec2.model.Tag;
 public class App {
 	public static void main(String[] args) throws UnsupportedEncodingException {
 		
-		String sqlFileName = "trmsv2-insert.sql";
-		
-		Scanner sc = null;
-		String sqlFileContent = "";
-
-		try {
-			File file = new File(Test2.class.getClassLoader().getResource(sqlFileName).getFile());
-			sc = new Scanner(file);
-
-			while (sc.hasNextLine()) {
-				sqlFileContent += sc.nextLine() + "\n";
-			}
-
-		} catch (Exception e) {
-			// TODO: handle exception
-		} finally {
-			sc.close();
-		}
-		
-		sc = null;
-		String dockerFile = "";
-
-		try {
-			File file = new File(Test2.class.getClassLoader().getResource("Dockerfile").getFile());
-			sc = new Scanner(file);
-
-			while (sc.hasNextLine()) {
-				dockerFile += sc.nextLine() + "\n";
-			}
-
-		} catch (Exception e) {
-			// TODO: handle exception
-		} finally {
-			sc.close();
-		}
-		
 		//=====================================================================
 		
 		String gitUrl = "https://github.com/miguno/java-docker-build-tutorial";
@@ -77,33 +39,21 @@ public class App {
 		String repoName = urlPieces[urlPieces.length - 1];
 		
 		//=====================================================================
-		
+
 		String bashScript = 
 				"#!/bin/bash\n"
 				+ "sudo yum update -y\n"
 				+ "sudo yum install -y docker\n"
 				+ "sudo service docker start\n"
 				+ "sudo yum install -y git\n"
+				+ "sudo yum install -y curl\n"
 				+ "cd /tmp\n"
-				+ "sudo git clone " + gitUrl + ".git\n"
-				+ "cd " + repoName + "/\n"
-				+ "sudo docker build -t " + repoName + " .\n"
-				+ "sudo docker run -p 80:8123 -d " + repoName + ":latest\n"
-				+ "cd /tmp\n"
-				+ "sudo mkdir db\n"
-				+ "cd db\n"
-//				+ "sudo touch script.sql\n"
-//				+ "sudo chmod ugo+rwx script.sql\n"
-//				+ "sudo cat > script.sql << EOF\n"
-//				+ sqlFileContent				
-//				+ "EOF\n"
-				+ "sudo touch Dockerfile\n"
-				+ "sudo chmod ugo+rwx Dockerfile\n"
-				+ "sudo cat > Dockerfile << EOF\n"
-				+ dockerFile
-				+ "EOF\n"
-				+ "sudo docker build --rm=true --build-arg DB_NAME=trms --build-arg SQL_FILE=script.sql -t postgresql:9.3 .\n"
-				+ "sudo docker run -i -t -p 5432:5432 -d postgresql:9.3\n";
+				+ "sudo curl https://revature-jose-test-bucket.s3.us-east-2.amazonaws.com/DockerfileDb --output DockerfileDb\n"
+				+ "sudo curl https://revature-jose-test-bucket.s3.us-east-2.amazonaws.com/DockerfileJava --output DockerfileJava\n"
+				+ "sudo docker build -f DockerfileDb -t eg_postgresql .\n"
+				+ "sudo docker build -f DockerfileJava -t trms .\n"
+				+ "sudo docker run -p 80:8080 -d trms\n"
+				+ "sudo docker run -p 5432:5432 -d eg_postgresql\n";
 		
 		System.out.println(bashScript);
 

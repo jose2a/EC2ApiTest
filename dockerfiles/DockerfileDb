@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y python-software-properties software-pro
 # Install curl
 RUN apt-get install curl
 
-RUN curl https://revature-jose-test-bucket.s3.us-east-2.amazonaws.com/trmsv2-insert.sql --output /tmp/script.sql
+RUN curl https://revature-jose-test-bucket.s3.us-east-2.amazonaws.com/script.sql --output /tmp/script.sql
 
 # Note: The official Debian and Ubuntu images automatically ``apt-get clean``
 # after each ``apt-get``
