@@ -33,10 +33,12 @@ public class App {
 		
 		//=====================================================================
 		
-		String gitUrl = "https://github.com/miguno/java-docker-build-tutorial";
+		String gitUrl = "https://github.com/jose2a/trms";
 		String[] urlPieces = gitUrl.split("/");
 		
 		String repoName = urlPieces[urlPieces.length - 1];
+		
+		System.out.println(repoName);
 		
 		//=====================================================================
 

@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * NOT USED!!!!
+ * @author jose2a
+ *
+ */
 public class Test2 {
 
 	public static void main(String[] args) throws FileNotFoundException {

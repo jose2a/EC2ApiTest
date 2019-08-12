@@ -27,7 +27,7 @@ import software.amazon.awssdk.services.ec2.model.RunInstancesResponse;
 import software.amazon.awssdk.services.ec2.model.Tag;
 
 /**
- * Hello world!
+ * NO USED!!!!
  *
  */
 public class App2 {
@@ -92,11 +92,6 @@ public class App2 {
 				+ "cd /tmp\n"
 				+ "sudo mkdir db\n"
 				+ "cd db\n"
-//				+ "sudo touch script.sql\n"
-//				+ "sudo chmod ugo+rwx script.sql\n"
-//				+ "sudo cat > script.sql << EOF\n"
-//				+ sqlFileContent				
-//				+ "EOF\n"
 				+ "sudo touch Dockerfile\n"
 				+ "sudo chmod ugo+rwx Dockerfile\n"
 				+ "sudo cat > Dockerfile << EOF\n"
